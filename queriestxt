@@ -1,0 +1,112 @@
+
+#######
+query hello {
+{
+    greet
+}
+}
+
+#######
+query getAllUsers{
+  users {
+    firstName,
+    lastName,
+    email,
+    password
+  }
+}
+
+#######
+query getAllQuotes{
+  quotes {
+    name,
+    by
+  }
+}
+
+########
+getAllUsers along with quotes
+query getAllUsers{
+  users {
+    _id,
+    firstName,
+    lastName,
+    email,
+    password,
+    quotes {
+      name
+      by
+    }
+  }
+}
+
+########
+query particularUser {
+  user(_id:"235") {
+    firstName
+    lastName
+    email
+    quotes{
+      name
+    }
+  }
+}
+
+##########
+using query variable
+
+query particularUser($userid:ID!) {
+  user(_id:$userid) {
+    firstName
+    lastName
+    email
+    quotes{
+      name
+    }
+  }
+}
+//set this value on query variable
+{
+  "userid" : "234"
+}
+
+##########
+post mutation
+mutation addUser {
+  signupUserDummy(firstName:"Rakibul",lastName:"Hasan",email:"mdrakib@gmail.com",password:"12345678") {
+    firstName
+    lastName
+    email
+  }
+}
+
+ ##########
+ using query variable
+ 
+mutation addUser($userNew:UserInput!){
+  signupUserDummy(userNew:$userNew) {
+    firstName
+    lastName
+    email
+  }
+}
+//set this value on query variable
+{
+  "userNew": {
+    "firstName": "Adnan",
+    "lastName": "Kausar",
+    "email": "adu@gmail.com",
+    "password": "123456"
+  }
+}
+
+##########
+also can use alias name of signupUserDummy as user
+
+mutation addUser($userNew:UserInput!){
+  user : signupUserDummy(userNew:$userNew) {
+    firstName
+    lastName
+    email
+  }
+}
